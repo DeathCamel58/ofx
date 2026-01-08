@@ -1,4 +1,4 @@
-describe OFX::Status do
+describe OFX::SignOnMessage::Status do
   let(:ofx) { OFX::Parser::Base.new(ofx_file) }
   let(:parser) { ofx.parser }
   let(:status) { parser.sign_on.status }

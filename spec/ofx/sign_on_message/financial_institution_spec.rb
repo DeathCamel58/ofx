@@ -1,4 +1,4 @@
-describe OFX::FinancialInstitution do
+describe OFX::SignOnMessage::FinancialInstitution do
   before do
     @ofx = OFX::Parser::Base.new("spec/fixtures/creditcard.ofx")
     @parser = @ofx.parser
@@ -7,7 +7,7 @@ describe OFX::FinancialInstitution do
 
   describe 'financial institution' do
     it 'returns financial institution object' do
-      expect(@financial_institution).to be_a(OFX::FinancialInstitution)
+      expect(@financial_institution).to be_a(OFX::SignOnMessage::FinancialInstitution)
     end
 
     it 'returns organization' do

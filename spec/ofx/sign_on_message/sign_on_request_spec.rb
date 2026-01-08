@@ -1,4 +1,4 @@
-describe OFX::SignOnRequest do
+describe OFX::SignOnMessage::SignOnRequest do
   before do
     @ofx = OFX::Parser::Base.new("spec/fixtures/statement_download_request.ofx")
     @parser = @ofx.parser
@@ -7,7 +7,7 @@ describe OFX::SignOnRequest do
 
   describe "sign_on request" do
     it "should be an instance of SignOnRequest" do
-      expect(@sign_on).to be_a(OFX::SignOnRequest)
+      expect(@sign_on).to be_a(OFX::SignOnMessage::SignOnRequest)
     end
 
     it "should return client_date (DTCLIENT)" do
@@ -36,7 +36,7 @@ describe OFX::SignOnRequest do
     end
 
     it "should return financial institution (FI) aggregate" do
-      expect(@sign_on.financial_institution).to be_a(OFX::FinancialInstitution)
+      expect(@sign_on.financial_institution).to be_a(OFX::SignOnMessage::FinancialInstitution)
     end
 
     describe "empty or missing fields" do
