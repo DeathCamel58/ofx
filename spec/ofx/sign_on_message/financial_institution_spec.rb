@@ -2,7 +2,7 @@ describe OFX::FinancialInstitution do
   before do
     @ofx = OFX::Parser::Base.new("spec/fixtures/creditcard.ofx")
     @parser = @ofx.parser
-    @financial_institution = @parser.sign_on.fi
+    @financial_institution = @parser.sign_on.financial_institution
   end
 
   describe 'financial institution' do
