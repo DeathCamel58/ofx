@@ -1,0 +1,41 @@
+OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:NONE
+NEWFILEUID:NONE
+
+<OFX> <!-- Begin request data -->
+  <SIGNONMSGSRQV1>
+    <SONRQ> <!-- Begin signon -->
+      <DTCLIENT>20051029101000</DTCLIENT> <!-- Oct. 29, 2005, 10:10:00 am -->
+      <USERID>MyUserID</USERID> <!-- User ID -->
+      <USERPASS>MyPassword</USERPASS> <!-- Password (Transport level encrypted) -->
+      <LANGUAGE>ENG</LANGUAGE> <!-- Language used for text -->
+      <FI> <!-- ID of receiving institution -->
+        <ORG>NCH</ORG> <!-- Name of ID owner -->
+        <FID>1001</FID> <!-- Actual ID -->
+      </FI>
+      <APPID>MyApp</APPID>
+      <APPVER>0500</APPVER>
+    </SONRQ> <!-- End of signon -->
+  </SIGNONMSGSRQV1>
+  <BANKMSGSRQV1>
+    <STMTTRNRQ> <!-- Begin request -->
+      <TRNUID>1001</TRNUID>
+      <STMTRQ> <!-- Begin statement request -->
+        <BANKACCTFROM> <!-- Identify the account -->
+          <BANKID>121099999</BANKID> <!-- Routing transit or other FI ID -->
+          <ACCTID>999988</ACCTID> <!-- Account number -->
+          <ACCTTYPE>CHECKING</ACCTTYPE> <!-- Account type -->
+        </BANKACCTFROM> <!-- End of account ID -->
+        <INCTRAN> <!-- Begin include transaction -->
+          <INCLUDE>Y</INCLUDE> <!-- Include transactions -->
+        </INCTRAN> <!-- End of include transaction -->
+      </STMTRQ> <!-- End of statement request -->
+    </STMTTRNRQ> <!-- End request -->
+  </BANKMSGSRQV1>
+</OFX> <!-- End of request data -->

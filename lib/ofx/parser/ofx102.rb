@@ -95,8 +95,11 @@ module OFX
       end
 
       def build_sign_on
-        node = html.search('signonmsgsrsv1 > sonrs')
-        OFX::SignOnResponse.from_ofx_102(node)
+        if (node = html.search('signonmsgsrsv1 > sonrs')).any?
+          OFX::SignOnResponse.from_ofx_102(node)
+        elsif (node = html.search('signonmsgsrqv1 > sonrq')).any?
+          OFX::SignOnRequest.from_ofx_102(node)
+        end
       end
 
       def build_transactions(node)

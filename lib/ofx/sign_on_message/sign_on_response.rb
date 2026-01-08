@@ -31,10 +31,10 @@ module OFX
     # @return [OFX::FinancialInstitution, nil] {FinancialInstitution} identification
     attr_accessor :financial_institution
 
-    # @return [String] Session cookie that the client should return on the next <SONRQ>
+    # @return [String] Session cookie that the client should return on the next {SignOnRequest}
     attr_accessor :session_cookie
 
-    # @return [String] Access key that the client should send in the next <SONRQ>
+    # @return [String] Access key that the client should send in the next {SignOnRequest}
     attr_accessor :access_key
 
     def self.from_ofx_102(node)
