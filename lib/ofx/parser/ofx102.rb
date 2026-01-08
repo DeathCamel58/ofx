@@ -73,8 +73,8 @@ module OFX
         account = build_account(node)
         OFX::Statement.new(
           currency: stmrs_node.search('curdef').inner_text,
-          start_date: build_date(stmrs_node.search('banktranlist > dtstart').inner_text),
-          end_date: build_date(stmrs_node.search('banktranlist > dtend').inner_text),
+          start_date: OFX::Utils.build_date(stmrs_node.search('banktranlist > dtstart').inner_text),
+          end_date: OFX::Utils.build_date(stmrs_node.search('banktranlist > dtend').inner_text),
           account: account,
           transactions: account.transactions,
           balance: account.balance,
@@ -94,20 +94,12 @@ module OFX
                          })
       end
 
-      def build_status(node)
-        OFX::Status.new({
-                          code: node.search('code').inner_text.to_i,
-                          severity: SEVERITY[node.search('severity').inner_text],
-                          message: node.search('message').inner_text
-                        })
-      end
-
       def build_sign_on
         OFX::SignOn.new({
                           language: html.search('signonmsgsrsv1 > sonrs > language').inner_text,
                           fi_id: html.search('signonmsgsrsv1 > sonrs > fi > fid').inner_text,
                           fi_name: html.search('signonmsgsrsv1 > sonrs > fi > org').inner_text,
-                          status: build_status(html.search('signonmsgsrsv1 > sonrs > status'))
+                          status: OFX::Status.from_ofx_102(html.search('signonmsgsrsv1 > sonrs > status'))
                         })
       end
 
@@ -119,7 +111,7 @@ module OFX
 
       def build_transaction(element)
         occurred_at = begin
-          build_date(element.search('dtuser').inner_text)
+          OFX::Utils.build_date(element.search('dtuser').inner_text)
         rescue StandardError
           nil
         end
@@ -133,7 +125,7 @@ module OFX
                                payee: element.search('payee').inner_text,
                                check_number: element.search('checknum').inner_text,
                                ref_number: element.search('refnum').inner_text,
-                               posted_at: build_date(element.search('dtposted').inner_text),
+                               posted_at: OFX::Utils.build_date(element.search('dtposted').inner_text),
                                occurred_at: occurred_at,
                                type: build_type(element),
                                sic: element.search('sic').inner_text
@@ -145,34 +137,13 @@ module OFX
       end
 
       def build_amount(element)
-        to_decimal(element.search('trnamt').inner_text)
-      end
-
-      # Input format is `YYYYMMDDHHMMSS.XXX[gmt offset[:tz name]]`
-      def build_date(date)
-        tz_pattern = /(?:\[([+-]?\d{1,4}):\S{3}\])?\z/
-
-        # Timezone offset handling
-        date.sub!(tz_pattern, '')
-        offset = Regexp.last_match(1)
-
-        if offset
-          # Offset padding
-          _, hours, mins = *offset.match(/\A([+-]?\d{1,2})(\d{0,2})?\z/)
-          offset = format('%+03d%02d', hours.to_i, mins.to_i)
-        else
-          offset = '+0000'
-        end
-
-        date << " #{offset}"
-
-        Time.parse(date)
+        OFX::Utils.to_decimal(element.search('trnamt').inner_text)
       end
 
       def build_balance(node)
-        amount = to_decimal(node.search('ledgerbal > balamt').inner_text)
+        amount = OFX::Utils.to_decimal(node.search('ledgerbal > balamt').inner_text)
         posted_at = begin
-          build_date(node.search('ledgerbal > dtasof').inner_text)
+          OFX::Utils.build_date(node.search('ledgerbal > dtasof').inner_text)
         rescue StandardError
           nil
         end
@@ -186,20 +157,14 @@ module OFX
 
       def build_available_balance(node)
         if node.search('availbal').size > 0
-          amount = to_decimal(node.search('availbal > balamt').inner_text)
+          amount = OFX::Utils.to_decimal(node.search('availbal > balamt').inner_text)
 
           OFX::Balance.new({
                              amount: amount,
                              amount_in_pennies: (amount * 100).to_i,
-                             posted_at: build_date(node.search('availbal > dtasof').inner_text)
+                             posted_at: OFX::Utils.build_date(node.search('availbal > dtasof').inner_text)
                            })
         end
-      end
-
-      def to_decimal(amount)
-        BigDecimal(amount.to_s.gsub(',', '.'))
-      rescue ArgumentError
-        BigDecimal('0.0')
       end
     end
   end

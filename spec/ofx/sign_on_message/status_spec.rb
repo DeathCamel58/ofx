@@ -15,7 +15,7 @@ describe OFX::Status do
     end
 
     it "should return message" do
-      expect(status.message).to eq("")
+      expect(status.message).to eq("Success")
     end
 
     it "should be successful" do
