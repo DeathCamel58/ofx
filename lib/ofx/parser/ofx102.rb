@@ -5,13 +5,6 @@ module OFX
     class OFX102
       VERSION = '1.0.2'
 
-      ACCOUNT_TYPES = {
-        'CHECKING' => :checking,
-        'SAVINGS' => :savings,
-        'CREDITLINE' => :creditline,
-        'MONEYMRKT' => :moneymrkt
-      }.freeze
-
       SEVERITY = {
         'INFO' => :info,
         'WARN' => :warn,
@@ -62,29 +55,18 @@ module OFX
       private
 
       def build_statement(node)
-        stmrs_node = node.search('stmtrs, ccstmtrs')
         account = build_account(node)
-        OFX::Statement.new(
-          currency: stmrs_node.search('curdef').inner_text,
-          start_date: OFX::Utils.build_date(stmrs_node.search('banktranlist > dtstart').inner_text),
-          end_date: OFX::Utils.build_date(stmrs_node.search('banktranlist > dtend').inner_text),
-          account: account,
-          transactions: account.transactions,
-          balance: account.balance,
-          available_balance: account.available_balance
-        )
+        statement = OFX::Statement.from_ofx_102(node)
+
+        statement.account = account
+        statement.balance = account.balance
+        statement.available_balance = account.available_balance
+
+        statement
       end
 
       def build_account(node)
-        OFX::Account.new({
-                           bank_id: node.search('bankacctfrom > bankid').inner_text,
-                           id: node.search('bankacctfrom > acctid, ccacctfrom > acctid').inner_text,
-                           type: ACCOUNT_TYPES[node.search('bankacctfrom > accttype').inner_text.to_s.upcase],
-                           transactions: build_transactions(node),
-                           balance: build_balance(node),
-                           available_balance: build_available_balance(node),
-                           currency: node.search('stmtrs > curdef, ccstmtrs > curdef').inner_text
-                         })
+        OFX::Account.from_ofx_102(node)
       end
 
       def build_sign_on
@@ -92,40 +74,6 @@ module OFX
           OFX::SignOnMessage::SignOnResponse.from_ofx_102(node)
         elsif (node = html.search('signonmsgsrqv1 > sonrq')).any?
           OFX::SignOnMessage::SignOnRequest.from_ofx_102(node)
-        end
-      end
-
-      def build_transactions(node)
-        # TODO: also parse `banktranlistp > stmttrnp` (pending TXs)
-        node.search('banktranlist > stmttrn').collect do |element|
-          OFX::Transaction.from_ofx_102(element)
-        end
-      end
-
-      def build_balance(node)
-        amount = OFX::Utils.to_decimal(node.search('ledgerbal > balamt').inner_text)
-        posted_at = begin
-          OFX::Utils.build_date(node.search('ledgerbal > dtasof').inner_text)
-        rescue StandardError
-          nil
-        end
-
-        OFX::Balance.new({
-                           amount: amount,
-                           amount_in_pennies: (amount * 100).to_i,
-                           posted_at: posted_at
-                         })
-      end
-
-      def build_available_balance(node)
-        if node.search('availbal').size > 0
-          amount = OFX::Utils.to_decimal(node.search('availbal > balamt').inner_text)
-
-          OFX::Balance.new({
-                             amount: amount,
-                             amount_in_pennies: (amount * 100).to_i,
-                             posted_at: OFX::Utils.build_date(node.search('availbal > dtasof').inner_text)
-                           })
         end
       end
     end
