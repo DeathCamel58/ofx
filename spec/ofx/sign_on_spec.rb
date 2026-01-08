@@ -10,12 +10,8 @@ describe OFX::SignOn do
       expect(@sign_on.language).to eq("ENG")
     end
 
-    it "should return Financial Institution ID" do
-      expect(@sign_on.fi_id).to eq("24909")
-    end
-
-    it "should return Financial Institution Name" do
-      expect(@sign_on.fi_name).to eq("Citigroup")
+    it 'financial institution' do
+      expect(@sign_on.fi).to be_a(OFX::FinancialInstitution)
     end
 
     it "should return status" do

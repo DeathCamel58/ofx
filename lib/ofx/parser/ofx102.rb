@@ -97,10 +97,10 @@ module OFX
       def build_sign_on
         OFX::SignOn.new({
                           language: html.search('signonmsgsrsv1 > sonrs > language').inner_text,
-                          fi_id: html.search('signonmsgsrsv1 > sonrs > fi > fid').inner_text,
-                          fi_name: html.search('signonmsgsrsv1 > sonrs > fi > org').inner_text,
+                          fi: OFX::FinancialInstitution.from_ofx_102(html.search('fi')),
                           status: OFX::Status.from_ofx_102(html.search('signonmsgsrsv1 > sonrs > status'))
                         })
+
       end
 
       def build_transactions(node)
