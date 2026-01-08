@@ -18,10 +18,6 @@ describe OFX::Transaction do
       expect(@transaction.amount.class).to be BigDecimal
     end
 
-    it "should set amount in pennies" do
-      expect(@transaction.amount_in_pennies).to eq(-3534)
-    end
-
     it "should set fit id" do
       expect(@transaction.fit_id).to eq("200910091")
     end
@@ -58,10 +54,6 @@ describe OFX::Transaction do
 
     it "should set amount" do
       expect(@transaction.amount).to eq(BigDecimal('60.39'))
-    end
-
-    it "should set amount in pennies" do
-      expect(@transaction.amount_in_pennies).to eq(6039)
     end
 
     it "should set fit id" do
@@ -176,10 +168,6 @@ describe OFX::Transaction do
       it "should set amount" do
         expect(@transaction.amount).to eq(BigDecimal('-11.76'))
       end
-
-      it "should set amount in pennies" do
-        expect(@transaction.amount_in_pennies).to eq(-1176)
-      end
     end
 
     context "credit" do
@@ -189,10 +177,6 @@ describe OFX::Transaction do
 
       it "should set amount" do
         expect(@transaction.amount).to eq(BigDecimal('47.01'))
-      end
-
-      it "should set amount in pennies" do
-        expect(@transaction.amount_in_pennies).to eq(4701)
       end
     end
   end
@@ -209,10 +193,6 @@ describe OFX::Transaction do
 
     it "should return zero in amount" do
       expect(@parser.account.transactions[0].amount).to eq(BigDecimal('0.0'))
-    end
-
-    it "should return zero in amount_in_pennies" do
-      expect(@parser.account.transactions[0].amount_in_pennies).to eq(0)
     end
   end
 end

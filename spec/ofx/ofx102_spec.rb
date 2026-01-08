@@ -36,13 +36,13 @@ describe OFX::Parser::OFX102 do
   
   it "should know about all transaction types" do
     valid_types = [
-      'CREDIT', 'DEBIT', 'INT', 'DIV', 'FEE', 'SRVCHG', 'DEP', 'ATM', 'POS', 'XFER',
+      'CREDIT', 'DEBIT', 'INT', 'DIV', 'FEE', 'SRVCHG', 'DEP', 'ATM', 'POS', 'XFER', 'HOLD',
       'CHECK', 'PAYMENT', 'CASH', 'DIRECTDEP', 'DIRECTDEBIT', 'REPEATPMT', 'OTHER', 'IN', 'OUT'
     ]
-    expect(valid_types.sort).to eq(OFX::Parser::OFX102::TRANSACTION_TYPES.keys.sort)
+    expect(valid_types.sort).to eq(OFX::Transaction::TRANSACTION_TYPES.keys.sort)
 
     valid_types.each do |transaction_type|
-      expect(transaction_type.downcase.to_sym).to eq(OFX::Parser::OFX102::TRANSACTION_TYPES[transaction_type])
+      expect(transaction_type.downcase.to_sym).to eq(OFX::Transaction::TRANSACTION_TYPES[transaction_type])
     end
   end
 end

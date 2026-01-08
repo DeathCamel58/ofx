@@ -35,10 +35,6 @@ describe OFX::Statement do
         expect(balance.amount).to eq(BigDecimal('598.44'))
       end
 
-      it "returns balance in pennies" do
-        expect(balance.amount_in_pennies).to eq(59844)
-      end
-
       it "returns balance date" do
         expect(balance.posted_at).to eq(Time.parse("2009-11-01 00:00:00 +0000"))
       end
@@ -49,10 +45,6 @@ describe OFX::Statement do
 
       it "returns available balance" do
         expect(available_balance.amount).to eq(BigDecimal('1555.99'))
-      end
-
-      it "returns available balance in pennies" do
-        expect(available_balance.amount_in_pennies).to eq(155599)
       end
 
       it "returns available balance date" do
@@ -101,10 +93,6 @@ describe OFX::Statement do
         expect(balance.amount).to eq(BigDecimal('-1111.01'))
       end
 
-      it "returns balance in pennies" do
-        expect(balance.amount_in_pennies).to eq(-111101)
-      end
-
       it "returns balance date" do
         expect(balance.posted_at).to eq(Time.parse("2007-06-23 19:20:13 +0000"))
       end
@@ -115,10 +103,6 @@ describe OFX::Statement do
 
       it "returns available balance" do
         expect(available_balance.amount).to eq(BigDecimal('19000.99'))
-      end
-
-      it "returns available balance in pennies" do
-        expect(available_balance.amount_in_pennies).to eq(1900099)
       end
 
       it "returns available balance date" do

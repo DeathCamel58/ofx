@@ -12,13 +12,6 @@ module OFX
         'MONEYMRKT' => :moneymrkt
       }.freeze
 
-      TRANSACTION_TYPES = %w[
-        ATM CASH CHECK CREDIT DEBIT DEP DIRECTDEBIT DIRECTDEP DIV
-        FEE INT OTHER PAYMENT POS REPEATPMT SRVCHG XFER IN OUT
-      ].each_with_object({}) do |tran_type, hash|
-        hash[tran_type] = tran_type.downcase.to_sym
-      end
-
       SEVERITY = {
         'INFO' => :info,
         'WARN' => :warn,
@@ -103,40 +96,10 @@ module OFX
       end
 
       def build_transactions(node)
+        # TODO: also parse `banktranlistp > stmttrnp` (pending TXs)
         node.search('banktranlist > stmttrn').collect do |element|
-          build_transaction(element)
+          OFX::Transaction.from_ofx_102(element)
         end
-      end
-
-      def build_transaction(element)
-        occurred_at = begin
-          OFX::Utils.build_date(element.search('dtuser').inner_text)
-        rescue StandardError
-          nil
-        end
-
-        OFX::Transaction.new({
-                               amount: build_amount(element),
-                               amount_in_pennies: (build_amount(element) * 100).to_i,
-                               fit_id: element.search('fitid').inner_text,
-                               memo: element.search('memo').inner_text,
-                               name: element.search('name').inner_text,
-                               payee: element.search('payee').inner_text,
-                               check_number: element.search('checknum').inner_text,
-                               ref_number: element.search('refnum').inner_text,
-                               posted_at: OFX::Utils.build_date(element.search('dtposted').inner_text),
-                               occurred_at: occurred_at,
-                               type: build_type(element),
-                               sic: element.search('sic').inner_text
-                             })
-      end
-
-      def build_type(element)
-        TRANSACTION_TYPES[element.search('trntype').inner_text.to_s.upcase]
-      end
-
-      def build_amount(element)
-        OFX::Utils.to_decimal(element.search('trnamt').inner_text)
       end
 
       def build_balance(node)
