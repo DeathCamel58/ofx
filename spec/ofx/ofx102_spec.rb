@@ -26,7 +26,7 @@ describe OFX::Parser::OFX102 do
   end
 
   it "should set sign_on" do
-    expect(@parser.sign_on).to be_a(OFX::SignOn)
+    expect(@parser.sign_on).to be_a(OFX::SignOnMessage::SignOnResponse)
   end
 
   it "should set statements" do

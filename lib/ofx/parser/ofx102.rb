@@ -23,6 +23,10 @@ module OFX
         @statements ||= html.search('stmttrnrs, ccstmttrnrs').collect { |node| build_statement(node) }
       end
 
+      def investment_statements
+        @investment_statements ||= html.search('invstmtrs').collect { |node| build_investment_statement(node) }
+      end
+
       def accounts
         @accounts ||= html.search('stmttrnrs, ccstmttrnrs').collect { |node| build_account(node) }
       end
@@ -63,6 +67,10 @@ module OFX
         statement.available_balance = account.available_balance
 
         statement
+      end
+
+      def build_investment_statement(node)
+        OFX::Investment::InvestmentStatementResponse.from_ofx_102(node)
       end
 
       def build_account(node)
