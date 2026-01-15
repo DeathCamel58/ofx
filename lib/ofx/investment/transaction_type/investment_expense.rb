@@ -8,22 +8,34 @@ module OFX
         # @return [OFX::Investment::Aggregates::SecId] The transaction
         attr_accessor :secid
 
-        # @return Subaccount the money is being transferred to
-        attr_accessor :to
-
-        # @return Subaccount the money is being transferred from
-        attr_accessor :from
+        # @return [BigDecimal] TODO: Document this
+        attr_accessor :total
 
         # @return TODO: Document this
-        attr_accessor :units
+        attr_accessor :subacctsec
+
+        # @return TODO: Document this
+        attr_accessor :subacctfund
+
+        # @return [String] The currency of the transaction
+        attr_accessor :currency
+
+        # @return [String] The original currency of the transaction
+        attr_accessor :origcurrency
+
+        # @return TODO: Document this
+        attr_accessor :inv401k_source
 
         def self.from_ofx_102(node)
           node = normalize_node(node)
 
           response = new({
-                           to: node.search('subacctto').inner_text,
-                           from: node.search('subacctfrom').inner_text,
-                           units: node.search('units').inner_text
+                           total: OFX::Utils.to_decimal(node.search('total').inner_text),
+                           subacctsec: node.search('subacctsec').inner_text,
+                           subacctfund: node.search('subacctfund').inner_text,
+                           currency: node.search('currency').inner_text,
+                           origcurrency: node.search('origcurrency').inner_text,
+                           inv401k_source: node.search('inv401ksource').inner_text
                          })
 
           tran_node = node.search('invtran')

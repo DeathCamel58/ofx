@@ -75,7 +75,7 @@ module OFX
                            commission: OFX::Utils.to_decimal(node.search('commission').inner_text),
                            taxes: OFX::Utils.to_decimal(node.search('taxes').inner_text),
                            fees: OFX::Utils.to_decimal(node.search('fees').inner_text),
-                           load: node.search('load').inner_text,
+                           load: OFX::Utils.to_decimal(node.search('load').inner_text),
                            total: OFX::Utils.to_decimal(node.search('total').inner_text),
                            currency: node.search('currency').inner_text,
                            origcurrency: node.search('origcurrency').inner_text,

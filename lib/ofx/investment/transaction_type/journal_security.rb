@@ -21,12 +21,9 @@ module OFX
           node = normalize_node(node)
 
           response = new({
-                           total: OFX::Utils.to_decimal(node.search('total').inner_text),
                            subacct_to: node.search('subacctto').inner_text,
                            subacct_from: node.search('subacctfrom').inner_text,
-                           currency: node.search('currency').inner_text,
-                           origcurrency: node.search('origcurrency').inner_text,
-                           units: node.search('units').inner_text
+                           units: OFX::Utils.to_decimal(node.search('units').inner_text)
                          })
 
           tran_node = node.search('invtran')

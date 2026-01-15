@@ -6,10 +6,10 @@ module OFX
         attr_accessor :invtran
 
         # @return Subaccount the money is being transferred to
-        attr_accessor :to
+        attr_accessor :subacct_to
 
         # @return Subaccount the money is being transferred from
-        attr_accessor :from
+        attr_accessor :subacct_from
 
         # @return [BigDecimal] The total amount of the transaction
         attr_accessor :total
@@ -18,8 +18,8 @@ module OFX
           node = normalize_node(node)
 
           response = new({
-                           to: node.search('subacctto').inner_text,
-                           from: node.search('subacctfrom').inner_text,
+                           subacct_to: node.search('subacctto').inner_text,
+                           subacct_from: node.search('subacctfrom').inner_text,
                            total: OFX::Utils.to_decimal(node.search('total').inner_text)
                          })
 

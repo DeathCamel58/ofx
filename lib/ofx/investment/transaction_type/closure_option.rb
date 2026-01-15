@@ -31,8 +31,9 @@ module OFX
 
           response = new({
                            option_action: node.search('optaction').inner_text,
-                           units: node.search('units').inner_text,
-                           sh_per_contract: node.search('shperctrct').inner_text,
+                           units: OFX::Utils.to_decimal(node.search('units').inner_text),
+                           sh_per_contract: OFX::Utils.to_decimal(node.search('shperctrct').inner_text),
+                           subacctsec: node.search('subacctsec').inner_text,
                            relfitid: node.search('relfitid').inner_text,
                            gain: node.search('gain').inner_text
                          })

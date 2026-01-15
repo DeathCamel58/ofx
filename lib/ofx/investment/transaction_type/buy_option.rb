@@ -16,7 +16,7 @@ module OFX
 
           response = new({
                            opt_buy_type: node.search('optbuytype').inner_text,
-                           sh_per_contract: node.search('shperctrct').inner_text
+                           sh_per_contract: OFX::Utils.to_decimal(node.search('shperctrct').inner_text)
                          })
 
           invbuy_node = node.search('invbuy')

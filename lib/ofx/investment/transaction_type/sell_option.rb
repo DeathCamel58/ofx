@@ -25,10 +25,10 @@ module OFX
 
           response = new({
                            opt_sell_type: node.search('optselltype').inner_text,
-                           sh_per_contract: node.search('shperctrct').inner_text,
+                           sh_per_contract: OFX::Utils.to_decimal(node.search('shperctrct').inner_text),
                            relfitid: node.search('relfitid').inner_text,
                            reltype: node.search('reltype').inner_text,
-                           secured: node.search('secured').inner_text,
+                           secured: node.search('secured').inner_text == 'Y'
                          })
 
           invsell_node = node.search('invsell')
