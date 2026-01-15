@@ -33,6 +33,8 @@ module OFX
     }.freeze
 
     def self.from_ofx_102(node)
+      node = normalize_node(node)
+
       new({
             bank_id: node.search('bankacctfrom > bankid').inner_text,
             branch_id: node.search('bankacctfrom > branchid').inner_text,

@@ -59,6 +59,8 @@ module OFX
       attr_accessor :access_key
 
       def self.from_ofx_102(node)
+        node = normalize_node(node)
+
         return nil if node.empty?
 
         request = new({

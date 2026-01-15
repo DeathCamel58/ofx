@@ -13,6 +13,8 @@ module OFX
         attr_accessor :unique_id_type
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           return nil if node.empty?
 
           new({

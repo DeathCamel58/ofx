@@ -15,6 +15,8 @@ module OFX
         attr_accessor :total
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            to: node.search('subacctto').inner_text,
                            from: node.search('subacctfrom').inner_text,

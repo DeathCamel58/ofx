@@ -12,6 +12,8 @@ module OFX
         attr_accessor :relfitid
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            buy_type: node.search('buytype').inner_text,
                            relfitid: node.search('relfitid').inner_text

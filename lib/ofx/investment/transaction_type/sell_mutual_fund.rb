@@ -15,6 +15,8 @@ module OFX
         attr_accessor :relfitid
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            sell_type: node.search('selltype').inner_text,
                            avg_cost_basis: OFX::Utils.to_decimal(node.search('avgcostbasis').inner_text),

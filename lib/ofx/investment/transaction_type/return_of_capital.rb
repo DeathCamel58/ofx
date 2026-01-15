@@ -27,6 +27,8 @@ module OFX
         attr_accessor :inv401k_source
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            total: OFX::Utils.to_decimal(node.search('total').inner_text),
                            subacctsec: node.search('subacctsec').inner_text,

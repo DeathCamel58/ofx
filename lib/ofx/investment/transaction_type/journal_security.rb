@@ -18,6 +18,8 @@ module OFX
         attr_accessor :units
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            total: OFX::Utils.to_decimal(node.search('total').inner_text),
                            subacct_to: node.search('subacctto').inner_text,

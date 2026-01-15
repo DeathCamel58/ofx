@@ -23,13 +23,15 @@ module OFX
         attr_accessor :memo
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           return nil if node.empty?
 
           new({
                 fit_id: node.search('fitid').inner_text,
                 transaction_id: node.search('srvrtid').inner_text,
-                trade_date: node.search('dttrade').inner_text,
-                settlement_date: node.search('dtsettle').inner_text,
+                trade_date: OFX::Utils.build_date(node.search('dttrade').inner_text),
+                settlement_date: OFX::Utils.build_date(node.search('dtsettle').inner_text),
                 memo: node.search('memo').inner_text,
               })
         end

@@ -12,6 +12,8 @@ module OFX
         attr_accessor :sh_per_contract
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            opt_buy_type: node.search('optbuytype').inner_text,
                            sh_per_contract: node.search('shperctrct').inner_text

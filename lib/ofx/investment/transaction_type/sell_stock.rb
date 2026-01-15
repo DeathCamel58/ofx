@@ -9,6 +9,8 @@ module OFX
         attr_accessor :sell_type
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            sell_type: node.search('selltype').inner_text
                          })

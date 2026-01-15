@@ -13,6 +13,8 @@ module OFX
         attr_accessor :subacctfund
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           new({
                 transaction: OFX::Transaction.from_ofx_102(node),
               })

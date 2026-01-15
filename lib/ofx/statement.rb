@@ -34,6 +34,8 @@ module OFX
     attr_accessor :interest_rate
 
     def self.from_ofx_102(node)
+      node = normalize_node(node)
+
       stmrs_node = node.search('stmtrs, ccstmtrs')
 
       new(

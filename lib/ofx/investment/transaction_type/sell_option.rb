@@ -21,6 +21,8 @@ module OFX
         attr_accessor :secured
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            opt_sell_type: node.search('optselltype').inner_text,
                            sh_per_contract: node.search('shperctrct').inner_text,

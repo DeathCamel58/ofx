@@ -37,6 +37,8 @@ module OFX
       attr_accessor :investment_401k_balance
 
       def self.from_ofx_102(node)
+        node = normalize_node(node)
+
         new(
           date: OFX::Utils.build_date(node.search('dtasof').inner_text),
           currency: node.search('curdef').inner_text,

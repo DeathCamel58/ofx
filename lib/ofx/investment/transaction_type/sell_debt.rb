@@ -12,6 +12,8 @@ module OFX
         attr_accessor :accrued_interest
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            sell_reason: node.search('sellreason').inner_text,
                            accrued_interest: OFX::Utils.to_decimal(node.search('accrdint').inner_text)

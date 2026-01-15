@@ -53,6 +53,8 @@ module OFX
     end
 
     def self.from_ofx_102(node)
+      node = normalize_node(node)
+
       occurred_at = begin
                       OFX::Utils.build_date(node.search('dtuser').inner_text)
                     rescue StandardError

@@ -27,6 +27,8 @@ module OFX
         attr_accessor :gain
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            option_action: node.search('optaction').inner_text,
                            units: node.search('units').inner_text,

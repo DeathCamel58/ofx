@@ -69,6 +69,8 @@ module OFX
         attr_accessor :inv401k_source
 
         def self.from_ofx_102(node)
+          node = normalize_node(node)
+
           response = new({
                            units: OFX::Utils.to_decimal(node.search('units').inner_text),
                            unit_price: OFX::Utils.to_decimal(node.search('unitprice').inner_text),
