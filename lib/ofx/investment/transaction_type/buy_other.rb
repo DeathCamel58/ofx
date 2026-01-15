@@ -2,7 +2,7 @@ module OFX
   module Investment
     module TransactionType
       class BuyOther < Foundation
-        # @return [String] Buy stock aggregate
+        # @return [OFX::Investment::Aggregates::InvBuy]
         attr_accessor :invbuy
 
         def self.from_ofx_102(node)

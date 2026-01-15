@@ -2,7 +2,7 @@ module OFX
   module Investment
     module TransactionType
       class BuyStock < Foundation
-        # @return [String] Buy stock aggregate
+        # @return [OFX::Investment::Aggregates::InvBuy]
         attr_accessor :invbuy
 
         # @return [String] The BUYTOCOVER buy type used to close short sales.

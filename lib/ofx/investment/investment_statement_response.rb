@@ -61,6 +61,16 @@ module OFX
         'INVEXPENSE' => OFX::Investment::TransactionType::InvestmentExpense,
         'JRNLFUND' => OFX::Investment::TransactionType::JournalFund,
         'JRNLSEC' => OFX::Investment::TransactionType::JournalSecurity,
+        'MARGININTEREST' => OFX::Investment::TransactionType::MarginInterest,
+        'REINVEST' => OFX::Investment::TransactionType::Reinvest,
+        'RETOFCAP' => OFX::Investment::TransactionType::ReturnOfCapital,
+        'SELLDEBT' => OFX::Investment::TransactionType::SellDebt,
+        'SELLMF' => OFX::Investment::TransactionType::SellMutualFund,
+        'SELLOPT' => OFX::Investment::TransactionType::SellOption,
+        'SELLOTHER' => OFX::Investment::TransactionType::SellOther,
+        'SELLSTOCK' => OFX::Investment::TransactionType::SellStock,
+        'SPLIT' => OFX::Investment::TransactionType::Split,
+        'TRANSFER' => OFX::Investment::TransactionType::Transfer,
       }.freeze
 
       def self.build_transactions(node)

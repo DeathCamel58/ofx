@@ -2,7 +2,7 @@ module OFX
   module Investment
     module TransactionType
       class BuyDebt < Foundation
-        # @return [String] Buy stock aggregate
+        # @return [OFX::Investment::Aggregates::InvBuy]
         attr_accessor :invbuy
 
         # @return [BigDecimal] Accrued interest. This amount is not reflected in the <TOTAL> field of a containing aggregate.

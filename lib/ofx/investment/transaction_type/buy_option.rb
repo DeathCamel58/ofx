@@ -2,7 +2,7 @@ module OFX
   module Investment
     module TransactionType
       class BuyOption < Foundation
-        # @return [String] Buy stock aggregate
+        # @return [OFX::Investment::Aggregates::InvBuy]
         attr_accessor :invbuy
 
         # @return [String] The BUYTOOPEN buy type is like “ordinary” buying of option and works like stocks.
